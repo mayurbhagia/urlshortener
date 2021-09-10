@@ -1,0 +1,28 @@
+<html>
+<head>
+    <script>
+        function changeAction(form) {
+   
+            var pathvar = document.mayurform.urltoconvert.value;
+            
+            var newpath = "https://qvavniy6a9.execute-api.ap-south-1.amazonaws.com/newuat/" +pathvar;
+            document.mayurform.action = newpath;
+            document.mayurform.method = "GET";
+            document.mayurform.submit();
+        }
+    </script>
+ </head>
+<body>
+ 
+    <h3>Enter Short URL to Convert to Long and Redirect</h3> 
+    <form name="mayurform" onsubmit="return changeAction(this)">
+ 
+<input id="urltoconvert" name="urltoconvert"></input>
+ 
+        <button type="submit">Submit</button>
+ 
+ 
+    </form>
+</body>
+ 
+</html>
