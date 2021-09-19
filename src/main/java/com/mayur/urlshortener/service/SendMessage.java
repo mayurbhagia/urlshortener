@@ -11,27 +11,28 @@ import com.amazonaws.services.pinpoint.model.DirectMessageConfiguration;
 import com.amazonaws.services.pinpoint.model.MessageRequest;
 import com.amazonaws.services.pinpoint.model.SMSMessage;
 import com.amazonaws.services.pinpoint.model.SendMessagesRequest;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class SendMessage {
 
 
     public static String messageType = "TRANSACTIONAL";
-    public static String registeredKeyword = "";
-    public static String senderId = "";
 
-    public boolean sendSMS(String phonenumber, String url, String appId) {
+   // public static String registeredKeyword = "";
+    //public static String senderId = "";
+       @Value("${region}")
+        private String region;
+
+    public boolean sendSMS(String phonenumber, String url, String appId, String senderId, String registeredKeyword) {
 
         
-        
-        System.out.println("vaule of app id passed is = "+appId);
+
        
-        System.out.println("AppId boolean value inside is = "+appId);
-       
-       
+
         String originationNumber = "";
         String destinationNumber = phonenumber;
-        String region = "ap-south-1";
+
         System.out.println("Sending SMS " );
 
 

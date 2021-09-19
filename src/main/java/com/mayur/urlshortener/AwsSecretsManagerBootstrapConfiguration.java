@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.aws.secretsmanager.AwsSecretsManagerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
- 
+import org.springframework.beans.factory.annotation.Value;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
  
@@ -16,11 +16,15 @@ import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 @ConditionalOnProperty(prefix = AwsSecretsManagerProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 public class AwsSecretsManagerBootstrapConfiguration {
  
- public static final String REGION = "ap-south-1";
+@Value("${region}")
+private String region;
+
+//public static final String REGION;
  
  @Bean
  @ConditionalOnMissingBean
  AWSSecretsManager smClient() {
- return AWSSecretsManagerClientBuilder.standard().withRegion(REGION).build();
+ System.out.println("Mayur value of region is====>"+region);
+ return AWSSecretsManagerClientBuilder.standard().withRegion(region).build();
  }
 }

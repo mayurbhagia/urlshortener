@@ -13,10 +13,12 @@ import java.net.URL;
 import java.util.Random;
 import com.mayur.urlshortener.repository.ShortenerAnalysisRepository;
 import com.mayur.urlshortener.entity.ShortenerAnalysisPOJO;
+import org.springframework.core.env.Environment;
+import java.lang.Integer;
 
 @Service
 public class ShortenerService {
-
+    private Environment env;
     private final ShortenerRepository shortenerRepository;
     private final ShortenerAnalysisRepository shortenerAnalysisRepository;
     private final Base62Conversion conversion;
@@ -66,11 +68,13 @@ public class ShortenerService {
 
             if(entity1 == null)
                 {
+                String retention = env.getProperty("urlshort.urlretention");  
+                int ret=Integer.parseInt(retention);   
                 System.out.println("Inside Encoding method - Long URL to be converted is ===>"+request.getLongUrl());
                 Date dt = new Date();
                 Calendar c = Calendar.getInstance(); 
                 c.setTime(dt); 
-                c.add(Calendar.DATE, 30); //30 day retention for short URL after which we will purge
+                c.add(Calendar.DATE, ret); //retention for short URL after which we will purge
                 dt = c.getTime();
                 url.setExpiresDate(dt);
                 url.setCreatedDate(new Date());

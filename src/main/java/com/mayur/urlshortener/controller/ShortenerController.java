@@ -15,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import java.util.*;
 import java.util.regex.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 @RestController
+@EnableAutoConfiguration
 @RequestMapping("/api/v1")
 public class ShortenerController {
 
@@ -24,28 +27,36 @@ public class ShortenerController {
     private Environment env;
     private final ShortenerService shortenerService;
     private final SendMessage sendMessage = new SendMessage();
+   
 
 
     public ShortenerController(ShortenerService shortenerService) {
         this.shortenerService = shortenerService;
     }
 
+  
     @ApiOperation(value = "Enter URL to Shorten", notes = "Method converts long url to short url")
     @PostMapping("create-short-url")
     public String longToShort(@RequestParam String longurltoconvert, @RequestParam String phonenumber) {
+      
         ShortenerDTO shortenerDTO = new ShortenerDTO();
         shortenerDTO.setLongUrl(longurltoconvert);
         String shorturl = shortenerService.longToShort(shortenerDTO);
+        String envdomain = env.getProperty("urlshort.domainname");
+        String envcountrycode = env.getProperty("urlshort.countrycode");
+     
         System.out.println("index of error ="+shorturl.indexOf("Error:"));
         
         if (shorturl.indexOf("Error:") == -1)
         {
-          String urltobesent = "http://url.mayurbhagia.online/"+shorturl+"/";
-          String shorturlforreturn = "Your Short URL is http://url.mayurbhagia.online/"+shorturl + "  In this url.mayurbhagia.online is your domain and "+shorturl + " is your Short URL Code";
+          String urltobesent = envdomain+shorturl+"/";
+          String shorturlforreturn = "Your Short URL is " + urltobesent + "  In this "+envdomain+" is your domain and "+shorturl + " is your Short URL Code";
           
 
           String sendSMSBoolean = env.getProperty("urlshort.smsflag");
           String appId = env.getProperty("urlshort.pinpointappid");
+          String senderid = env.getProperty("urlshort.pinpointsenderid");
+          String registeredkeyword = env.getProperty("urlshort.pinpointregisteredkeyword");
           System.out.println("vaule of sendSMSBoolean="+sendSMSBoolean);
           System.out.println("vaule of appId="+appId);
           System.out.println(appId != null && !appId.trim().isEmpty());
@@ -53,8 +64,8 @@ public class ShortenerController {
           if((sendSMSBoolean.equals("true")) && (appId != null && !appId.trim().isEmpty()))
           {
             System.out.println("sendSMSBoolean value passed is ="+sendSMSBoolean);
-          phonenumber = "+91"+phonenumber;
-          boolean flag = sendMessage.sendSMS(phonenumber, urltobesent, appId);
+          phonenumber = envcountrycode+phonenumber;
+          boolean flag = sendMessage.sendSMS(phonenumber, urltobesent, appId, senderid, registeredkeyword);
           System.out.println("SMS sending status ="+flag);
           }
           return shorturlforreturn;
@@ -73,6 +84,8 @@ public class ShortenerController {
         String urltobesent = "";
         String shorturlforreturn ="";
         String smstexttosend = "";
+        String envdomain = env.getProperty("urlshort.domainname");
+        String envcountrycode = env.getProperty("urlshort.countrycode");
         if (Boolean.parseBoolean(shortflag) == true)
         {
         //String messagewithurl= "test user this is your test shorturl https://timesofindia.indiatimes.com please use this to register";  
@@ -89,9 +102,9 @@ public class ShortenerController {
               System.out.println("index of error ="+shorturl.indexOf("Error:"));
               if (shorturl.indexOf("Error:") == -1)
               {
-                urltobesent = "http://url.mayurbhagia.online/"+shorturl+"/";
+                urltobesent = envdomain+shorturl+"/";
                 responsestr.add(urltobesent);
-                shorturlforreturn = "Your Short URL is http://url.mayurbhagia.online/"+shorturl + "  In this url.mayurbhagia.online is your domain and "+shorturl + " is your Short URL Code";
+                shorturlforreturn = "Your Short URL is "+envdomain+shorturl + "  In this " +envdomain+" is your domain and "+shorturl + " is your Short URL Code";
               }
               else return shorturl;
             }  
@@ -110,6 +123,8 @@ public class ShortenerController {
           System.out.println("SMS to be sent ==>"+smstexttosend);
           String sendSMSBoolean = env.getProperty("urlshort.smsflag");
           String appId = env.getProperty("urlshort.pinpointappid");
+          String senderid = env.getProperty("urlshort.pinpointsenderid");
+          String registeredkeyword = env.getProperty("urlshort.pinpointregisteredkeyword");
           System.out.println("vaule of sendSMSBoolean="+sendSMSBoolean);
           System.out.println("vaule of appId="+appId);
           System.out.println(appId != null && !appId.trim().isEmpty());
@@ -117,8 +132,8 @@ public class ShortenerController {
           if((sendSMSBoolean.equals("true")) && (appId != null && !appId.trim().isEmpty()))
           {
           System.out.println("sendSMSBoolean value passed is ="+sendSMSBoolean);
-          phonenumber = "+91"+phonenumber;
-          boolean flag = sendMessage.sendSMS(phonenumber, smstexttosend, appId);
+          phonenumber = envcountrycode+phonenumber;
+          boolean flag = sendMessage.sendSMS(phonenumber, smstexttosend, appId, senderid, registeredkeyword);
           System.out.println("SMS sending status ="+flag);
           }
 
