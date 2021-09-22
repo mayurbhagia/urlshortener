@@ -44,7 +44,8 @@ public class ShortenerController {
         String shorturl = shortenerService.longToShort(shortenerDTO);
         String envdomain = env.getProperty("urlshort.domainname");
         String envcountrycode = env.getProperty("urlshort.countrycode");
-     
+        String region = env.getProperty("region");
+        System.out.println("mayur region inside long to short==>+"+region);
         System.out.println("index of error ="+shorturl.indexOf("Error:"));
         
         if (shorturl.indexOf("Error:") == -1)
@@ -65,7 +66,7 @@ public class ShortenerController {
           {
             System.out.println("sendSMSBoolean value passed is ="+sendSMSBoolean);
           phonenumber = envcountrycode+phonenumber;
-          boolean flag = sendMessage.sendSMS(phonenumber, urltobesent, appId, senderid, registeredkeyword);
+          boolean flag = sendMessage.sendSMS(phonenumber, urltobesent, appId, senderid, registeredkeyword, region);
           System.out.println("SMS sending status ="+flag);
           }
           return shorturlforreturn;
@@ -86,6 +87,8 @@ public class ShortenerController {
         String smstexttosend = "";
         String envdomain = env.getProperty("urlshort.domainname");
         String envcountrycode = env.getProperty("urlshort.countrycode");
+        String region = env.getProperty("region");
+        System.out.println("mayur region inside long to short==>+"+region);
         if (Boolean.parseBoolean(shortflag) == true)
         {
         //String messagewithurl= "test user this is your test shorturl https://timesofindia.indiatimes.com please use this to register";  
@@ -133,7 +136,7 @@ public class ShortenerController {
           {
           System.out.println("sendSMSBoolean value passed is ="+sendSMSBoolean);
           phonenumber = envcountrycode+phonenumber;
-          boolean flag = sendMessage.sendSMS(phonenumber, smstexttosend, appId, senderid, registeredkeyword);
+          boolean flag = sendMessage.sendSMS(phonenumber, smstexttosend, appId, senderid, registeredkeyword, region);
           System.out.println("SMS sending status ="+flag);
           }
 

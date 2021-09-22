@@ -24,7 +24,7 @@ private String region;
  @Bean
  @ConditionalOnMissingBean
  AWSSecretsManager smClient() {
- System.out.println("Mayur value of region is====>"+region);
+ System.out.println("Mayur value of region within secrets manager====>"+region);
  return AWSSecretsManagerClientBuilder.standard().withRegion(region).build();
  }
 }

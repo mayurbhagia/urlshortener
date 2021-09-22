@@ -15,9 +15,11 @@ import com.mayur.urlshortener.repository.ShortenerAnalysisRepository;
 import com.mayur.urlshortener.entity.ShortenerAnalysisPOJO;
 import org.springframework.core.env.Environment;
 import java.lang.Integer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class ShortenerService {
+    @Autowired
     private Environment env;
     private final ShortenerRepository shortenerRepository;
     private final ShortenerAnalysisRepository shortenerAnalysisRepository;

@@ -11,7 +11,7 @@ import com.amazonaws.services.pinpoint.model.DirectMessageConfiguration;
 import com.amazonaws.services.pinpoint.model.MessageRequest;
 import com.amazonaws.services.pinpoint.model.SMSMessage;
 import com.amazonaws.services.pinpoint.model.SendMessagesRequest;
-import org.springframework.beans.factory.annotation.Value;
+
 
 
 public class SendMessage {
@@ -21,10 +21,10 @@ public class SendMessage {
 
    // public static String registeredKeyword = "";
     //public static String senderId = "";
-       @Value("${region}")
-        private String region;
 
-    public boolean sendSMS(String phonenumber, String url, String appId, String senderId, String registeredKeyword) {
+
+
+    public boolean sendSMS(String phonenumber, String url, String appId, String senderId, String registeredKeyword, String region) {
 
         
 
@@ -34,7 +34,7 @@ public class SendMessage {
         String destinationNumber = phonenumber;
 
         System.out.println("Sending SMS " );
-
+        System.out.println("Region inside SMS code =="+region);
 
         //sendSMSMessage(pinpoint, message, appId, originationNumber, destinationNumber);
 
