@@ -8,7 +8,7 @@
 		<version>2.2.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.mayur</groupId>
+	<groupId>com.amazonaws</groupId>
 	<artifactId>urlshortener</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>urlshortener</name>
